@@ -9,6 +9,16 @@
       "mainClass": "guru.springframework.petclinicweb.PetClinicWebApplication",
       "projectName": "pet-clinic-web",
       "args": ""
+    },
+    {
+      "type": "java",
+      "name": "Spring Boot-PetClinicWebApplication<pet-clinic-web>",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "console": "internalConsole",
+      "mainClass": "guru.springframework.sfgpetclinic.PetClinicWebApplication",
+      "projectName": "pet-clinic-web",
+      "args": ""
     }
   ]
 }
