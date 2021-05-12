@@ -1,0 +1,7 @@
+spring:
+  banner:
+    image:
+      location: doge.png
+  # Internationalization
+  messages:
+    basename: messages/messages
