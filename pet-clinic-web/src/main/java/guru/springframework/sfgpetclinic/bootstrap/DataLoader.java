@@ -10,10 +10,12 @@ import guru.springframework.sfgpetclinic.model.Pet;
 import guru.springframework.sfgpetclinic.model.PetType;
 import guru.springframework.sfgpetclinic.model.Specialty;
 import guru.springframework.sfgpetclinic.model.Vet;
+import guru.springframework.sfgpetclinic.model.Visit;
 import guru.springframework.sfgpetclinic.services.OwnerService;
 import guru.springframework.sfgpetclinic.services.PetTypeService;
 import guru.springframework.sfgpetclinic.services.SpecialtyService;
 import guru.springframework.sfgpetclinic.services.VetService;
+import guru.springframework.sfgpetclinic.services.VisitService;
 
 @Component
 public class DataLoader implements CommandLineRunner {
@@ -22,13 +24,16 @@ public class DataLoader implements CommandLineRunner {
     private final VetService vetService;
     private final PetTypeService petTypeService;
     private final SpecialtyService specialtyService;
+    private final VisitService visitService;
 
     public DataLoader(OwnerService ownerService, VetService vetService,
-                      PetTypeService petTypeService, SpecialtyService specialtyService) {
+                      PetTypeService petTypeService, SpecialtyService specialtyService,
+                      VisitService visitService) {
         this.ownerService = ownerService;
         this.vetService = vetService;
         this.petTypeService = petTypeService;
         this.specialtyService = specialtyService;
+        this.visitService = visitService;
     }
 
     @Override
@@ -42,38 +47,38 @@ public class DataLoader implements CommandLineRunner {
     }
 
     private void loadData() {
-        PetType dog = new PetType();
+        var dog = new PetType();
         dog.setName("Dog");
-        PetType savedDogPetType = petTypeService.save(dog);
+        var savedDogPetType = petTypeService.save(dog);
 
-        PetType cat = new PetType();
+        var cat = new PetType();
         cat.setName("Cat");
-        PetType savedCatPetType = petTypeService.save(cat);
+        var savedCatPetType = petTypeService.save(cat);
 
         System.out.println("Loaded Pet Types...");
 
-        Specialty radiology = new Specialty();
+        var radiology = new Specialty();
         radiology.setDescription("Radiology");
-        Specialty savedRadiology = specialtyService.save(radiology);
+        var savedRadiology = specialtyService.save(radiology);
 
-        Specialty surgery = new Specialty();
+        var surgery = new Specialty();
         surgery.setDescription("Surgery");
-        Specialty savedSurgery = specialtyService.save(surgery);
+        var savedSurgery = specialtyService.save(surgery);
 
-        Specialty dentistry = new Specialty();
+        var dentistry = new Specialty();
         dentistry.setDescription("Dentistry");
-        Specialty savedDentistry = specialtyService.save(dentistry);
+        var savedDentistry = specialtyService.save(dentistry);
 
         System.out.println("Loaded Specialties...");
 
-        Owner owner1 = new Owner();
+        var owner1 = new Owner();
         owner1.setFirstName("Michael");
         owner1.setLastName("Weston");
         owner1.setAddress("123 Brickerel");
         owner1.setCity("Miami");
         owner1.setTelephone("988776655");
 
-        Pet mikesPet = new Pet();
+        var mikesPet = new Pet();
         mikesPet.setName("Rosco");
         mikesPet.setPetType(savedDogPetType);
         mikesPet.setOwner(owner1);
@@ -82,14 +87,14 @@ public class DataLoader implements CommandLineRunner {
 
         ownerService.save(owner1);
 
-        Owner owner2 = new Owner();
+        var owner2 = new Owner();
         owner2.setFirstName("Fiona");
         owner2.setLastName("Glenanne");
         owner2.setAddress("123 Brickerel");
         owner2.setCity("Miami");
         owner2.setTelephone("988776655");
 
-        Pet fionasPet = new Pet();
+        var fionasPet = new Pet();
         fionasPet.setName("Kitty");
         fionasPet.setPetType(savedCatPetType);
         fionasPet.setOwner(owner2);
@@ -98,15 +103,21 @@ public class DataLoader implements CommandLineRunner {
 
         ownerService.save(owner2);
 
-        System.out.println("Loaded Owners and Pets...");
+        var catVisit = new Visit();
+        catVisit.setPet(fionasPet);
+        catVisit.setDate(LocalDate.now());
+        catVisit.setDescription("Sneezy kitty.");
+        visitService.save(catVisit);
 
-        Vet vet1 = new Vet();
+        System.out.println("Loaded Owners, Pets and Visits...");
+
+        var vet1 = new Vet();
         vet1.setFirstName("Sam");
         vet1.setLastName("Axe");
         vet1.getSpecialties().add(savedRadiology);
         vetService.save(vet1);
 
-        Vet vet2 = new Vet();
+        var vet2 = new Vet();
         vet2.setFirstName("Thiago");
         vet2.setLastName("Cavalcante");
         vet2.getSpecialties().add(savedSurgery);
