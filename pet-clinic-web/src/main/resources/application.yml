@@ -5,3 +5,6 @@ spring:
   # Internationalization
   messages:
     basename: messages/messages
+  profiles:
+    active:
+      - springdatajpa
