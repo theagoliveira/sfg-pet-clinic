@@ -23,7 +23,6 @@ public class Owner extends Person {
     private String telephone;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "owner")
-    @Column(name = "pets")
     private Set<Pet> pets = new HashSet<>();
 
     public String getAddress() {
