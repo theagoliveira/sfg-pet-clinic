@@ -14,26 +14,26 @@ import guru.springframework.sfgpetclinic.services.map.VetMapService;
 
 class VetMapServiceTest {
 
-    VetMapService vetMapService;
+    VetMapService vetService;
 
     private static final Long vetId = 1L;
 
     @BeforeEach
     void setUp() {
-        vetMapService = new VetMapService(new SpecialtyMapService());
-        vetMapService.save(Vet.builder().id(vetId).build());
+        vetService = new VetMapService(new SpecialtyMapService());
+        vetService.save(Vet.builder().id(vetId).build());
     }
 
     @Test
     void findAll() {
-        Set<Vet> vetSet = vetMapService.findAll();
+        Set<Vet> vetSet = vetService.findAll();
 
         assertEquals(1, vetSet.size());
     }
 
     @Test
     void findById() {
-        Vet vet = vetMapService.findById(vetId);
+        Vet vet = vetService.findById(vetId);
 
         assertEquals(vetId, vet.getId());
     }
@@ -43,14 +43,14 @@ class VetMapServiceTest {
         Long newVetId = 2L;
 
         Vet newVet = Vet.builder().id(newVetId).build();
-        Vet savedVet = vetMapService.save(newVet);
+        Vet savedVet = vetService.save(newVet);
 
         assertEquals(newVetId, savedVet.getId());
     }
 
     @Test
     void saveWithoutId() {
-        Vet savedVet = vetMapService.save(Vet.builder().build());
+        Vet savedVet = vetService.save(Vet.builder().build());
 
         assertNotNull(savedVet);
         assertNotNull(savedVet.getId());
@@ -58,16 +58,16 @@ class VetMapServiceTest {
 
     @Test
     void deleteById() {
-        vetMapService.deleteById(vetId);
+        vetService.deleteById(vetId);
 
-        assertEquals(0, vetMapService.findAll().size());
+        assertEquals(0, vetService.findAll().size());
     }
 
     @Test
     void delete() {
-        vetMapService.delete(vetMapService.findById(vetId));
+        vetService.delete(vetService.findById(vetId));
 
-        assertEquals(0, vetMapService.findAll().size());
+        assertEquals(0, vetService.findAll().size());
     }
 
 }

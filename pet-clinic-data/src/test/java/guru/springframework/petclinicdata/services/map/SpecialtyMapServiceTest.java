@@ -13,26 +13,26 @@ import guru.springframework.sfgpetclinic.services.map.SpecialtyMapService;
 
 class SpecialtyMapServiceTest {
 
-    SpecialtyMapService specialtyMapService;
+    SpecialtyMapService specialtyService;
 
     private static final Long specialtyId = 1L;
 
     @BeforeEach
     void setUp() {
-        specialtyMapService = new SpecialtyMapService();
-        specialtyMapService.save(Specialty.builder().id(specialtyId).build());
+        specialtyService = new SpecialtyMapService();
+        specialtyService.save(Specialty.builder().id(specialtyId).build());
     }
 
     @Test
     void findAll() {
-        Set<Specialty> specialtySet = specialtyMapService.findAll();
+        Set<Specialty> specialtySet = specialtyService.findAll();
 
         assertEquals(1, specialtySet.size());
     }
 
     @Test
     void findById() {
-        Specialty specialty = specialtyMapService.findById(specialtyId);
+        Specialty specialty = specialtyService.findById(specialtyId);
 
         assertEquals(specialtyId, specialty.getId());
     }
@@ -42,14 +42,14 @@ class SpecialtyMapServiceTest {
         Long newSpecialtyId = 2L;
 
         Specialty newSpecialty = Specialty.builder().id(newSpecialtyId).build();
-        Specialty savedSpecialty = specialtyMapService.save(newSpecialty);
+        Specialty savedSpecialty = specialtyService.save(newSpecialty);
 
         assertEquals(newSpecialtyId, savedSpecialty.getId());
     }
 
     @Test
     void saveWithoutId() {
-        Specialty savedSpecialty = specialtyMapService.save(Specialty.builder().build());
+        Specialty savedSpecialty = specialtyService.save(Specialty.builder().build());
 
         assertNotNull(savedSpecialty);
         assertNotNull(savedSpecialty.getId());
@@ -57,16 +57,16 @@ class SpecialtyMapServiceTest {
 
     @Test
     void deleteById() {
-        specialtyMapService.deleteById(specialtyId);
+        specialtyService.deleteById(specialtyId);
 
-        assertEquals(0, specialtyMapService.findAll().size());
+        assertEquals(0, specialtyService.findAll().size());
     }
 
     @Test
     void delete() {
-        specialtyMapService.delete(specialtyMapService.findById(specialtyId));
+        specialtyService.delete(specialtyService.findById(specialtyId));
 
-        assertEquals(0, specialtyMapService.findAll().size());
+        assertEquals(0, specialtyService.findAll().size());
     }
 
 }

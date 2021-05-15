@@ -13,26 +13,26 @@ import guru.springframework.sfgpetclinic.services.map.PetTypeMapService;
 
 class PetTypeMapServiceTest {
 
-    PetTypeMapService petTypeMapService;
+    PetTypeMapService petTypeService;
 
     private static final Long petTypeId = 1L;
 
     @BeforeEach
     void setUp() {
-        petTypeMapService = new PetTypeMapService();
-        petTypeMapService.save(PetType.builder().id(petTypeId).build());
+        petTypeService = new PetTypeMapService();
+        petTypeService.save(PetType.builder().id(petTypeId).build());
     }
 
     @Test
     void findAll() {
-        Set<PetType> petTypeSet = petTypeMapService.findAll();
+        Set<PetType> petTypeSet = petTypeService.findAll();
 
         assertEquals(1, petTypeSet.size());
     }
 
     @Test
     void findById() {
-        PetType petType = petTypeMapService.findById(petTypeId);
+        PetType petType = petTypeService.findById(petTypeId);
 
         assertEquals(petTypeId, petType.getId());
     }
@@ -42,14 +42,14 @@ class PetTypeMapServiceTest {
         Long newPetTypeId = 2L;
 
         PetType newPetType = PetType.builder().id(newPetTypeId).build();
-        PetType savedPetType = petTypeMapService.save(newPetType);
+        PetType savedPetType = petTypeService.save(newPetType);
 
         assertEquals(newPetTypeId, savedPetType.getId());
     }
 
     @Test
     void saveWithoutId() {
-        PetType savedPetType = petTypeMapService.save(PetType.builder().build());
+        PetType savedPetType = petTypeService.save(PetType.builder().build());
 
         assertNotNull(savedPetType);
         assertNotNull(savedPetType.getId());
@@ -57,16 +57,16 @@ class PetTypeMapServiceTest {
 
     @Test
     void deleteById() {
-        petTypeMapService.deleteById(petTypeId);
+        petTypeService.deleteById(petTypeId);
 
-        assertEquals(0, petTypeMapService.findAll().size());
+        assertEquals(0, petTypeService.findAll().size());
     }
 
     @Test
     void delete() {
-        petTypeMapService.delete(petTypeMapService.findById(petTypeId));
+        petTypeService.delete(petTypeService.findById(petTypeId));
 
-        assertEquals(0, petTypeMapService.findAll().size());
+        assertEquals(0, petTypeService.findAll().size());
     }
 
 }

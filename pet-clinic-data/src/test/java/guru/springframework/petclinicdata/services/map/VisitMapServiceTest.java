@@ -15,7 +15,7 @@ import guru.springframework.sfgpetclinic.services.map.VisitMapService;
 
 class VisitMapServiceTest {
 
-    VisitMapService visitMapService;
+    VisitMapService visitService;
 
     private static final Long visitId = 1L;
     private static final Long petId = 1L;
@@ -23,8 +23,8 @@ class VisitMapServiceTest {
 
     @BeforeEach
     void setUp() {
-        visitMapService = new VisitMapService();
-        visitMapService.save(
+        visitService = new VisitMapService();
+        visitService.save(
             Visit.builder()
                  .id(visitId)
                  .pet(Pet.builder().id(petId).owner(Owner.builder().id(ownerId).build()).build())
@@ -34,14 +34,14 @@ class VisitMapServiceTest {
 
     @Test
     void findAll() {
-        Set<Visit> visitSet = visitMapService.findAll();
+        Set<Visit> visitSet = visitService.findAll();
 
         assertEquals(1, visitSet.size());
     }
 
     @Test
     void findById() {
-        Visit visit = visitMapService.findById(visitId);
+        Visit visit = visitService.findById(visitId);
 
         assertEquals(visitId, visit.getId());
     }
@@ -59,14 +59,14 @@ class VisitMapServiceTest {
                                      .build()
                               )
                               .build();
-        Visit savedVisit = visitMapService.save(newVisit);
+        Visit savedVisit = visitService.save(newVisit);
 
         assertEquals(newVisitId, savedVisit.getId());
     }
 
     @Test
     void saveWithoutId() {
-        Visit savedVisit = visitMapService.save(
+        Visit savedVisit = visitService.save(
             Visit.builder()
                  .pet(Pet.builder().id(petId).owner(Owner.builder().id(ownerId).build()).build())
                  .build()
@@ -78,16 +78,16 @@ class VisitMapServiceTest {
 
     @Test
     void deleteById() {
-        visitMapService.deleteById(visitId);
+        visitService.deleteById(visitId);
 
-        assertEquals(0, visitMapService.findAll().size());
+        assertEquals(0, visitService.findAll().size());
     }
 
     @Test
     void delete() {
-        visitMapService.delete(visitMapService.findById(visitId));
+        visitService.delete(visitService.findById(visitId));
 
-        assertEquals(0, visitMapService.findAll().size());
+        assertEquals(0, visitService.findAll().size());
     }
 
 }
