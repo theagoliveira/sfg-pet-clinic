@@ -6,7 +6,6 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import guru.springframework.sfgpetclinic.model.Owner;
-import guru.springframework.sfgpetclinic.model.Pet;
 import guru.springframework.sfgpetclinic.services.OwnerService;
 import guru.springframework.sfgpetclinic.services.PetService;
 import guru.springframework.sfgpetclinic.services.PetTypeService;
@@ -46,7 +45,7 @@ public class OwnerMapService extends AbstractMapService<Owner, Long> implements 
     @Override
     public Owner save(Owner object) {
         if (object != null) {
-            if (!object.getPets().isEmpty()) {
+            if (object.getPets() != null && !object.getPets().isEmpty()) {
                 object.getPets().forEach(pet -> {
                     if (pet.getPetType().getId() != null) {
                         pet.setPetType(petTypeService.save(pet.getPetType()));
@@ -55,7 +54,7 @@ public class OwnerMapService extends AbstractMapService<Owner, Long> implements 
                     }
 
                     if (pet.getId() == null) {
-                        Pet savedPet = petService.save(pet);
+                        var savedPet = petService.save(pet);
                         pet.setId(savedPet.getId());
                     }
                 });
@@ -69,7 +68,11 @@ public class OwnerMapService extends AbstractMapService<Owner, Long> implements 
 
     @Override
     public Owner findByLastName(String lastName) {
-        return null;
+        return this.findAll()
+                   .stream()
+                   .filter(o -> o.getLastName().equalsIgnoreCase(lastName))
+                   .findFirst()
+                   .orElse(null);
     }
 
 }

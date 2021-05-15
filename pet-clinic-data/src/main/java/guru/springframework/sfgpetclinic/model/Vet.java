@@ -37,4 +37,10 @@ public class Vet extends Person {
         this.specialties = specialties;
     }
 
+    @Builder
+    public Vet(Long id, String firstName, String lastName, Set<Specialty> specialties) {
+        super(id, firstName, lastName);
+        this.specialties = specialties;
+    }
+
 }
