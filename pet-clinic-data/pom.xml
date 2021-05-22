@@ -5,18 +5,19 @@
     <groupId>guru.springframework</groupId>
     <artifactId>sfg-pet-clinic</artifactId>
     <version>0.0.5-SNAPSHOT</version>
+    <relativePath>../</relativePath>
 	</parent>
 
 	<groupId>guru.springframework</groupId>
 	<artifactId>pet-clinic-data</artifactId>
 	<name>pet-clinic-data</name>
 	<description>Demo project for Spring Boot</description>
-	
+
   <properties>
 		<java.version>11</java.version>
     <spring-boot.repackage.skip>true</spring-boot.repackage.skip>
 	</properties>
-	
+
   <dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
