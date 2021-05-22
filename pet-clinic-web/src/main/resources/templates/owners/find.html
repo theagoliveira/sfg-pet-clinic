@@ -14,7 +14,7 @@
             <span class="help-inline">
               <div th:if="${#fields.hasAnyErrors()}">
                 <p th:each="err : ${#fields.allErrors()}" th:text="${err}">
-                  Error
+                  ERROR
                 </p>
               </div>
             </span>
@@ -31,6 +31,7 @@
     </form>
 
     <br />
+
     <a class="btn btn-default" th:href="@{/owners/new}">Add Owner</a>
   </body>
 

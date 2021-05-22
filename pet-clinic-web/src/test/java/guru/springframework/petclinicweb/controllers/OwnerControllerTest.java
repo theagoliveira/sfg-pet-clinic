@@ -14,6 +14,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -120,6 +121,20 @@ class OwnerControllerTest {
         mockMvc.perform(get("/owners"))
                .andExpect(status().is3xxRedirection())
                .andExpect(view().name("redirect:/owners/1"));
+    }
+
+    @Test
+    void processFindFormReturnEmpty() throws Exception {
+        when(ownerService.findAllByLastNameLikeIgnoreCase(anyString())).thenReturn(
+            Collections.emptyList()
+        );
+
+        mockMvc.perform(get("/owners"))
+               .andExpect(status().isOk())
+               .andExpect(view().name("owners/find"))
+               .andExpect(model().hasErrors())
+               .andExpect(model().attributeHasFieldErrors("owner", "lastName"))
+               .andExpect(model().attributeHasFieldErrorCode("owner", "lastName", "notFound"));
     }
 
 }
