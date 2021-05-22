@@ -90,7 +90,7 @@ class OwnerMapServiceTest {
     }
 
     @Test
-    void findAllByLastNameLike() {
+    void findAllByLastNameLikeIgnoreCase() {
         // TODO: implement test
     }
 
