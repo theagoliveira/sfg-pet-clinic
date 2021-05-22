@@ -4,6 +4,7 @@ import static org.hamcrest.Matchers.hasProperty;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
@@ -47,8 +48,19 @@ class OwnerControllerTest {
 
     MockMvc mockMvc;
 
-    private static final Set<Owner> owners = new HashSet<>(
-        (List<Owner>) Arrays.asList(Owner.builder().id(1L).build(), Owner.builder().id(2L).build())
+    private static final Long OWNER_ID1 = 1L;
+    private static final Long OWNER_ID2 = 2L;
+    private static final Owner OWNER = Owner.builder().id(OWNER_ID1).build();
+    private static final List<Owner> OWNERS_LIST_SINGLE = Arrays.asList(
+        Owner.builder().id(OWNER_ID1).build()
+    );
+    private static final List<Owner> OWNERS_LIST = Arrays.asList(
+        Owner.builder().id(OWNER_ID1).build(), Owner.builder().id(OWNER_ID2).build()
+    );
+    private static final Set<Owner> OWNERS_SET = new HashSet<>(
+        (List<Owner>) Arrays.asList(
+            Owner.builder().id(OWNER_ID1).build(), Owner.builder().id(OWNER_ID2).build()
+        )
     );
 
     @BeforeEach
@@ -57,9 +69,9 @@ class OwnerControllerTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"/owners", "/owners/", "/owners/index", "/owners/index.html"})
+    @ValueSource(strings = {"/owners/index", "/owners/index.html"})
     void index(String path) throws Exception {
-        when(ownerService.findAll()).thenReturn(owners);
+        when(ownerService.findAll()).thenReturn(OWNERS_SET);
 
         mockMvc.perform(get(path))
                .andExpect(status().isOk())
@@ -68,27 +80,44 @@ class OwnerControllerTest {
     }
 
     @Test
-    void find() throws Exception {
+    void show() throws Exception {
+        when(ownerService.findById(anyLong())).thenReturn(OWNER);
+
+        mockMvc.perform(get("/owners/1"))
+               .andExpect(status().isOk())
+               .andExpect(view().name("owners/show"))
+               .andExpect(model().attribute("owner", hasProperty("id", is(OWNER_ID1))));
+
+        verify(ownerService).findById(anyLong());
+    }
+
+    @Test
+    void initFindForm() throws Exception {
         mockMvc.perform(get("/owners/find"))
                .andExpect(status().isOk())
-               .andExpect(view().name("notImplemented"));
+               .andExpect(view().name("owners/find"))
+               .andExpect(model().attributeExists("owner"));
 
         verifyNoInteractions(ownerService);
     }
 
     @Test
-    void show() throws Exception {
-        // given
-        when(ownerService.findById(anyLong())).thenReturn(Owner.builder().id(1L).build());
+    void processFindFormReturnMany() throws Exception {
+        when(ownerService.findAllByLastNameLike(anyString())).thenReturn(OWNERS_LIST);
 
-        // when
-        mockMvc.perform(get("/owners/1"))
+        mockMvc.perform(get("/owners"))
                .andExpect(status().isOk())
-               .andExpect(view().name("owners/show"))
-               .andExpect(model().attribute("owner", hasProperty("id", is(1L))));
+               .andExpect(view().name("owners/index"))
+               .andExpect(model().attribute("owners", hasSize(2)));
+    }
 
-        // then
-        verify(ownerService).findById(anyLong());
+    @Test
+    void processFindFormReturnOne() throws Exception {
+        when(ownerService.findAllByLastNameLike(anyString())).thenReturn(OWNERS_LIST_SINGLE);
+
+        mockMvc.perform(get("/owners"))
+               .andExpect(status().is3xxRedirection())
+               .andExpect(view().name("redirect:/owners/1"));
     }
 
 }

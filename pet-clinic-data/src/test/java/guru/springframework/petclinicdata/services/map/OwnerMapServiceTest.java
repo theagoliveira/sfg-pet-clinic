@@ -89,4 +89,9 @@ class OwnerMapServiceTest {
         assertNull(owner);
     }
 
+    @Test
+    void findAllByLastNameLike() {
+        // TODO: implement test
+    }
+
 }
