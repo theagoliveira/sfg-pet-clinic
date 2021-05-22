@@ -2,7 +2,9 @@ package guru.springframework.sfgpetclinic.controllers;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 import guru.springframework.sfgpetclinic.services.OwnerService;
 
@@ -17,15 +19,22 @@ public class OwnerController {
     }
 
     @RequestMapping({"/", "", "/index", "/index.html"})
-    public String listOwners(Model model) {
+    public String index(Model model) {
         model.addAttribute("owners", ownerService.findAll());
 
         return "owners/index";
     }
 
     @RequestMapping("/find")
-    public String findOwners() {
+    public String find() {
         return "notImplemented";
+    }
+
+    @RequestMapping("/{id}")
+    public ModelAndView show(@PathVariable Long id) {
+        var mav = new ModelAndView("owners/show");
+        mav.addObject(ownerService.findById(id));
+        return mav;
     }
 
 }
