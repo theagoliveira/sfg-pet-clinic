@@ -6,7 +6,7 @@
     <h2>
       <th:block th:if="${pet['new']}">New </th:block>Pet
     </h2>
-    <form th:action="${pet['new']} ? '/owners/' + ${pet.owner?.id} + '/pets' : '/owners/' + ${pet.owner?.id} + '/pets/'  + ${pet.id}"
+    <form th:action="${pet['new']} ? '/owners/' + ${pet.owner.id} + '/pets' : '/owners/' + ${pet.owner.id} + '/pets/'  + ${pet.id}"
           th:object="${pet}" class="form-horizontal" method="post">
       <input type="hidden" name="id" th:value="*{id}" />
       <div class="form-group has-feedback">
@@ -14,7 +14,7 @@
           <label class="col-sm-2 control-label">Owner</label>
           <div class="col-sm-10">
             <span class="form-control"
-                  th:text="${pet.owner?.firstName + ' ' + pet.owner?.lastName}">
+                  th:text="${pet.owner.firstName + ' ' + pet.owner.lastName}">
               TEXT
             </span>
           </div>

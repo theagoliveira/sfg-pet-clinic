@@ -31,9 +31,9 @@ public class PetController {
 
     private static final String PETS_FORM = "owners/pets/form";
     private static final String PET = "pet";
-    PetService petService;
-    PetTypeService petTypeService;
-    OwnerService ownerService;
+    private final PetService petService;
+    private final PetTypeService petTypeService;
+    private final OwnerService ownerService;
 
     public PetController(PetService petService, PetTypeService petTypeService,
                          OwnerService ownerService) {
@@ -60,9 +60,9 @@ public class PetController {
     @GetMapping("/new")
     public String newPet(Owner owner, Model model) {
         var pet = Pet.builder().build();
+        owner.getPets().add(pet);
         pet.setOwner(owner);
         model.addAttribute(PET, pet);
-        owner.getPets().add(pet);
 
         return PETS_FORM;
     }
@@ -77,7 +77,9 @@ public class PetController {
             result.rejectValue("name", "duplicate");
         }
 
+        log.info("Not a duplicate.");
         owner.getPets().add(pet);
+        pet.setOwner(owner);
         if (result.hasErrors()) {
             model.addAttribute(PET, pet);
 
@@ -100,6 +102,7 @@ public class PetController {
     @PostMapping("/{id}")
     public String updatePet(Owner owner, @Valid Pet pet, BindingResult result,
                             @PathVariable Long id, Model model) {
+        log.info("Inside updatePet.");
         if (result.hasErrors()) {
             pet.setOwner(owner);
             model.addAttribute(PET, pet);
@@ -107,7 +110,7 @@ public class PetController {
             return PETS_FORM;
         } else {
             log.info("Updating pet.");
-            owner.getPets().add(pet);
+            pet.setOwner(owner);
             petService.save(pet);
 
             return "redirect:/owners/" + owner.getId();
