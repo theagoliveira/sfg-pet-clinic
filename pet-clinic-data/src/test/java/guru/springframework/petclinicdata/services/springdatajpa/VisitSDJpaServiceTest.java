@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -34,12 +33,12 @@ class VisitSDJpaServiceTest {
     @InjectMocks
     VisitSDJpaService visitService;
 
-    private static final Long visitId = 1L;
-    private static final Visit returnVisit = Visit.builder().id(visitId).build();
+    private static final Long VISIT_ID = 1L;
+    private static final Visit RETURN_VISIT = Visit.builder().id(VISIT_ID).build();
 
     @Test
     void findAll() {
-        Set<Visit> returnVisitsSet = new HashSet<>((List<Visit>) Arrays.asList(returnVisit));
+        Set<Visit> returnVisitsSet = new HashSet<>((List<Visit>) Arrays.asList(RETURN_VISIT));
 
         when(visitRepository.findAll()).thenReturn(returnVisitsSet);
         Set<Visit> visits = visitService.findAll();
@@ -50,56 +49,56 @@ class VisitSDJpaServiceTest {
 
     @Test
     void findById() {
-        when(visitRepository.findById(anyLong())).thenReturn(Optional.of(returnVisit));
-        Visit visit = visitService.findById(visitId);
+        when(visitRepository.findById(anyLong())).thenReturn(Optional.of(RETURN_VISIT));
+        Visit visit = visitService.findById(VISIT_ID);
 
-        assertEquals(visitId, visit.getId());
+        assertEquals(VISIT_ID, visit.getId());
     }
 
     @Test
     void findByIdNotFound() {
         when(visitRepository.findById(anyLong())).thenReturn(Optional.empty());
-        Visit visit = visitService.findById(visitId);
+        Visit visit = visitService.findById(VISIT_ID);
 
         assertNull(visit);
     }
 
     @Test
     void saveWithId() {
-        when(visitRepository.save(any(Visit.class))).thenReturn(returnVisit);
-        Visit savedVisit = visitService.save(returnVisit);
+        when(visitRepository.save(any(Visit.class))).thenReturn(RETURN_VISIT);
+        Visit savedVisit = visitService.save(RETURN_VISIT);
 
         assertNotNull(savedVisit);
-        assertEquals(visitId, savedVisit.getId());
+        assertEquals(VISIT_ID, savedVisit.getId());
         verify(visitRepository).save(any(Visit.class));
     }
 
     @Test
     void saveWithoutId() {
-        when(visitRepository.save(any(Visit.class))).thenReturn(returnVisit);
+        when(visitRepository.save(any(Visit.class))).thenReturn(RETURN_VISIT);
         Visit savedVisit = visitService.save(Visit.builder().build());
 
         assertNotNull(savedVisit);
-        assertEquals(visitId, savedVisit.getId());
+        assertEquals(VISIT_ID, savedVisit.getId());
         verify(visitRepository).save(any(Visit.class));
     }
 
     @Test
     void deleteById() {
-        visitService.deleteById(visitId);
+        visitService.deleteById(VISIT_ID);
         when(visitRepository.findAll()).thenReturn(new HashSet<Visit>());
 
         assertEquals(0, visitService.findAll().size());
-        verify(visitRepository, times(1)).deleteById(anyLong());
+        verify(visitRepository).deleteById(anyLong());
     }
 
     @Test
     void delete() {
-        visitService.delete(returnVisit);
+        visitService.delete(RETURN_VISIT);
         when(visitRepository.findAll()).thenReturn(new HashSet<Visit>());
 
         assertEquals(0, visitService.findAll().size());
-        verify(visitRepository, times(1)).delete(any(Visit.class));
+        verify(visitRepository).delete(any(Visit.class));
     }
 
 }
