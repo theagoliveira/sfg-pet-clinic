@@ -69,4 +69,9 @@ class PetMapServiceTest {
         assertEquals(0, petService.findAll().size());
     }
 
+    @Test
+    void findByNameIgnoreCaseAndOwnerId() {
+        // TODO: implement test
+    }
+
 }

@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -21,6 +22,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import guru.springframework.sfgpetclinic.model.Owner;
 import guru.springframework.sfgpetclinic.model.Pet;
 import guru.springframework.sfgpetclinic.repositories.PetRepository;
 import guru.springframework.sfgpetclinic.services.springdatajpa.PetSDJpaService;
@@ -34,12 +36,15 @@ class PetSDJpaServiceTest {
     @InjectMocks
     PetSDJpaService petService;
 
-    private static final Long petId = 1L;
-    private static final Pet returnPet = Pet.builder().id(petId).build();
+    private static final Long PET_ID = 1L;
+    private static final String PET_NAME = "name";
+    private static final Long OWNER_ID = 1L;
+    private static final Owner OWNER = Owner.builder().id(OWNER_ID).build();
+    private static final Pet PET = Pet.builder().id(PET_ID).name(PET_NAME).owner(OWNER).build();
 
     @Test
     void findAll() {
-        Set<Pet> returnPetsSet = new HashSet<>((List<Pet>) Arrays.asList(returnPet));
+        Set<Pet> returnPetsSet = new HashSet<>((List<Pet>) Arrays.asList(PET));
 
         when(petRepository.findAll()).thenReturn(returnPetsSet);
         Set<Pet> pets = petService.findAll();
@@ -50,43 +55,43 @@ class PetSDJpaServiceTest {
 
     @Test
     void findById() {
-        when(petRepository.findById(anyLong())).thenReturn(Optional.of(returnPet));
-        Pet pet = petService.findById(petId);
+        when(petRepository.findById(anyLong())).thenReturn(Optional.of(PET));
+        Pet pet = petService.findById(PET_ID);
 
-        assertEquals(petId, pet.getId());
+        assertEquals(PET_ID, pet.getId());
     }
 
     @Test
     void findByIdNotFound() {
         when(petRepository.findById(anyLong())).thenReturn(Optional.empty());
-        Pet pet = petService.findById(petId);
+        Pet pet = petService.findById(PET_ID);
 
         assertNull(pet);
     }
 
     @Test
     void saveWithId() {
-        when(petRepository.save(any(Pet.class))).thenReturn(returnPet);
-        Pet savedPet = petService.save(returnPet);
+        when(petRepository.save(any(Pet.class))).thenReturn(PET);
+        Pet savedPet = petService.save(PET);
 
         assertNotNull(savedPet);
-        assertEquals(petId, savedPet.getId());
+        assertEquals(PET_ID, savedPet.getId());
         verify(petRepository).save(any(Pet.class));
     }
 
     @Test
     void saveWithoutId() {
-        when(petRepository.save(any(Pet.class))).thenReturn(returnPet);
+        when(petRepository.save(any(Pet.class))).thenReturn(PET);
         Pet savedPet = petService.save(Pet.builder().build());
 
         assertNotNull(savedPet);
-        assertEquals(petId, savedPet.getId());
+        assertEquals(PET_ID, savedPet.getId());
         verify(petRepository).save(any(Pet.class));
     }
 
     @Test
     void deleteById() {
-        petService.deleteById(petId);
+        petService.deleteById(PET_ID);
         when(petRepository.findAll()).thenReturn(new HashSet<Pet>());
 
         assertEquals(0, petService.findAll().size());
@@ -95,11 +100,30 @@ class PetSDJpaServiceTest {
 
     @Test
     void delete() {
-        petService.delete(returnPet);
+        petService.delete(PET);
         when(petRepository.findAll()).thenReturn(new HashSet<Pet>());
 
         assertEquals(0, petService.findAll().size());
         verify(petRepository, times(1)).delete(any(Pet.class));
+    }
+
+    @Test
+    void findByNameIgnoreCaseAndOwnerId() {
+        when(petRepository.findByNameIgnoreCaseAndOwnerId(anyString(), anyLong())).thenReturn(PET);
+        Pet pet = petService.findByNameIgnoreCaseAndOwnerId(PET_NAME, OWNER_ID);
+
+        assertNotNull(pet);
+        assertEquals(PET_ID, pet.getId());
+        assertEquals(PET_NAME, pet.getName());
+        assertEquals(OWNER_ID, pet.getOwner().getId());
+    }
+
+    @Test
+    void findByNameIgnoreCaseAndOwnerIdNotFound() {
+        when(petRepository.findByNameIgnoreCaseAndOwnerId(anyString(), anyLong())).thenReturn(null);
+        Pet pet = petService.findByNameIgnoreCaseAndOwnerId(PET_NAME, OWNER_ID);
+
+        assertNull(pet);
     }
 
 }

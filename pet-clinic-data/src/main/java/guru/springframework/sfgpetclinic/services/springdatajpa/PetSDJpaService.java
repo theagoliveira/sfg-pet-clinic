@@ -49,4 +49,9 @@ public class PetSDJpaService implements PetService {
         return petRepository.save(object);
     }
 
+    @Override
+    public Pet findByNameIgnoreCaseAndOwnerId(String name, Long ownerId) {
+        return petRepository.findByNameIgnoreCaseAndOwnerId(name, ownerId);
+    }
+
 }

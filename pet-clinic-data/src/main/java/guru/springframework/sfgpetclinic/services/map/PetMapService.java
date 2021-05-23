@@ -37,4 +37,10 @@ public class PetMapService extends AbstractMapService<Pet, Long> implements PetS
         return super.save(object);
     }
 
+    @Override
+    public Pet findByNameIgnoreCaseAndOwnerId(String name, Long ownerId) {
+        // TODO: implement method
+        return null;
+    }
+
 }
