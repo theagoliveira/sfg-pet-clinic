@@ -92,7 +92,7 @@ class SpecialtySDJpaServiceTest {
         when(specialtyRepository.findAll()).thenReturn(new HashSet<Specialty>());
 
         assertEquals(0, specialtyService.findAll().size());
-        verify(specialtyRepository, times(1)).deleteById(anyLong());
+        verify(specialtyRepository).deleteById(anyLong());
     }
 
     @Test
@@ -101,7 +101,7 @@ class SpecialtySDJpaServiceTest {
         when(specialtyRepository.findAll()).thenReturn(new HashSet<Specialty>());
 
         assertEquals(0, specialtyService.findAll().size());
-        verify(specialtyRepository, times(1)).delete(any(Specialty.class));
+        verify(specialtyRepository).delete(any(Specialty.class));
     }
 
 }

@@ -95,7 +95,7 @@ class PetSDJpaServiceTest {
         when(petRepository.findAll()).thenReturn(new HashSet<Pet>());
 
         assertEquals(0, petService.findAll().size());
-        verify(petRepository, times(1)).deleteById(anyLong());
+        verify(petRepository).deleteById(anyLong());
     }
 
     @Test
@@ -104,7 +104,7 @@ class PetSDJpaServiceTest {
         when(petRepository.findAll()).thenReturn(new HashSet<Pet>());
 
         assertEquals(0, petService.findAll().size());
-        verify(petRepository, times(1)).delete(any(Pet.class));
+        verify(petRepository).delete(any(Pet.class));
     }
 
     @Test

@@ -90,7 +90,7 @@ class VetSDJpaServiceTest {
         when(vetRepository.findAll()).thenReturn(new HashSet<Vet>());
 
         assertEquals(0, vetService.findAll().size());
-        verify(vetRepository, times(1)).deleteById(anyLong());
+        verify(vetRepository).deleteById(anyLong());
     }
 
     @Test
@@ -99,7 +99,7 @@ class VetSDJpaServiceTest {
         when(vetRepository.findAll()).thenReturn(new HashSet<Vet>());
 
         assertEquals(0, vetService.findAll().size());
-        verify(vetRepository, times(1)).delete(any(Vet.class));
+        verify(vetRepository).delete(any(Vet.class));
     }
 
 }

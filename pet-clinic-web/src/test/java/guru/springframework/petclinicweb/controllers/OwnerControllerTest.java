@@ -150,18 +150,6 @@ class OwnerControllerTest {
     }
 
     @Test
-    void editOwner() throws Exception {
-        when(ownerService.findById(anyLong())).thenReturn(OWNER);
-
-        mockMvc.perform(get("/owners/1/edit"))
-               .andExpect(status().isOk())
-               .andExpect(view().name("owners/form"))
-               .andExpect(model().attributeExists("owner"));
-
-        verify(ownerService).findById(anyLong());
-    }
-
-    @Test
     void createOwner() throws Exception {
         when(ownerService.save(any(Owner.class))).thenReturn(OWNER);
 
@@ -171,6 +159,18 @@ class OwnerControllerTest {
                .andExpect(model().attributeExists("owner"));
 
         verify(ownerService).save(any(Owner.class));
+    }
+
+    @Test
+    void editOwner() throws Exception {
+        when(ownerService.findById(anyLong())).thenReturn(OWNER);
+
+        mockMvc.perform(get("/owners/1/edit"))
+               .andExpect(status().isOk())
+               .andExpect(view().name("owners/form"))
+               .andExpect(model().attributeExists("owner"));
+
+        verify(ownerService).findById(anyLong());
     }
 
     @Test

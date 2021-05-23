@@ -98,7 +98,7 @@ class OwnerSDJpaServiceTest {
         when(ownerRepository.findAll()).thenReturn(new HashSet<Owner>());
 
         assertEquals(0, ownerService.findAll().size());
-        verify(ownerRepository, times(1)).deleteById(anyLong());
+        verify(ownerRepository).deleteById(anyLong());
     }
 
     @Test
@@ -107,7 +107,7 @@ class OwnerSDJpaServiceTest {
         when(ownerRepository.findAll()).thenReturn(new HashSet<Owner>());
 
         assertEquals(0, ownerService.findAll().size());
-        verify(ownerRepository, times(1)).delete(any(Owner.class));
+        verify(ownerRepository).delete(any(Owner.class));
     }
 
     @Test
