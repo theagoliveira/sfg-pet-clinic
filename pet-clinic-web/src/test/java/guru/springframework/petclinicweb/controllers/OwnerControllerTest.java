@@ -115,6 +115,16 @@ class OwnerControllerTest {
     }
 
     @Test
+    void processFindFormReturnAll() throws Exception {
+        when(ownerService.findAllByLastNameLikeIgnoreCase(anyString())).thenReturn(OWNERS_LIST);
+
+        mockMvc.perform(get("/owners").param("lastName", ""))
+               .andExpect(status().isOk())
+               .andExpect(view().name("owners/index"))
+               .andExpect(model().attribute("owners", hasSize(2)));
+    }
+
+    @Test
     void processFindFormReturnOne() throws Exception {
         when(ownerService.findAllByLastNameLikeIgnoreCase(anyString())).thenReturn(
             OWNERS_LIST_SINGLE
