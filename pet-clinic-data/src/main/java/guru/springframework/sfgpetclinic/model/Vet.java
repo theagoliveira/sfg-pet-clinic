@@ -2,6 +2,7 @@ package guru.springframework.sfgpetclinic.model;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -38,6 +39,16 @@ public class Vet extends Person {
     public Vet(Long id, String firstName, String lastName, Set<Specialty> specialties) {
         super(id, firstName, lastName);
         this.specialties = specialties;
+    }
+
+    public String getListOfSpecialties() {
+        if (specialties.isEmpty()) {
+            return "";
+        }
+
+        return specialties.stream()
+                          .map(Specialty::getDescription)
+                          .collect(Collectors.joining(", "));
     }
 
 }
