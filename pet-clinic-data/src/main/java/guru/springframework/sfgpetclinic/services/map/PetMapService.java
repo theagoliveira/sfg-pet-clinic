@@ -1,5 +1,6 @@
 package guru.springframework.sfgpetclinic.services.map;
 
+import java.util.Objects;
 import java.util.Set;
 
 import org.springframework.context.annotation.Profile;
@@ -39,8 +40,17 @@ public class PetMapService extends AbstractMapService<Pet, Long> implements PetS
 
     @Override
     public Pet findByNameIgnoreCaseAndOwnerId(String name, Long ownerId) {
-        // TODO: implement method
-        return null;
+        return this.findAll()
+                   .stream()
+                   .filter(
+                       pet -> Objects.nonNull(pet.getName()) && pet.getName().equalsIgnoreCase(name)
+                   )
+                   .filter(
+                       pet -> Objects.nonNull(pet.getOwner())
+                               && pet.getOwner().getId().equals(ownerId)
+                   )
+                   .findFirst()
+                   .orElse(null);
     }
 
 }

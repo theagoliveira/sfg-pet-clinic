@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
+import java.util.List;
 import java.util.Set;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -18,13 +19,17 @@ class OwnerMapServiceTest {
 
     OwnerMapService ownerService;
 
-    private static final Long ownerId = 1L;
-    private static final String ownerLastName = "Cavalcante";
+    private static final Long OWNER_ID1 = 1L;
+    private static final Long OWNER_ID2 = 2L;
+    private static final int BEGIN_INDEX = 2;
+    private static final int END_INDEX = 8;
+    private static final String OWNER_LAST_NAME1 = "Cavalcante";
+    private static final String OWNER_LAST_NAME2 = "Xxvalcantx";
 
     @BeforeEach
     void setUp() {
         ownerService = new OwnerMapService(new PetTypeMapService(), new PetMapService());
-        ownerService.save(Owner.builder().id(ownerId).lastName(ownerLastName).build());
+        ownerService.save(Owner.builder().id(OWNER_ID1).lastName(OWNER_LAST_NAME1).build());
     }
 
     @Test
@@ -36,9 +41,9 @@ class OwnerMapServiceTest {
 
     @Test
     void findById() {
-        Owner owner = ownerService.findById(ownerId);
+        Owner owner = ownerService.findById(OWNER_ID1);
 
-        assertEquals(ownerId, owner.getId());
+        assertEquals(OWNER_ID1, owner.getId());
     }
 
     @Test
@@ -61,37 +66,50 @@ class OwnerMapServiceTest {
 
     @Test
     void deleteById() {
-        ownerService.deleteById(ownerId);
+        ownerService.deleteById(OWNER_ID1);
 
         assertEquals(0, ownerService.findAll().size());
     }
 
     @Test
     void delete() {
-        ownerService.delete(ownerService.findById(ownerId));
+        ownerService.delete(ownerService.findById(OWNER_ID1));
 
         assertEquals(0, ownerService.findAll().size());
     }
 
     @Test
     void findByLastName() {
-        Owner owner = ownerService.findByLastName(ownerLastName);
+        Owner owner = ownerService.findByLastName(OWNER_LAST_NAME1);
 
         assertNotNull(owner);
         assertEquals(1, owner.getId());
-        assertEquals(ownerLastName, owner.getLastName());
+        assertEquals(OWNER_LAST_NAME1, owner.getLastName());
     }
 
     @Test
     void findByLastNameNotFound() {
-        Owner owner = ownerService.findByLastName("ownerLastName");
+        Owner owner = ownerService.findByLastName("OWNER_LAST_NAME1");
 
         assertNull(owner);
     }
 
     @Test
     void findAllByLastNameLikeIgnoreCase() {
-        // TODO: implement test
+        ownerService.save(Owner.builder().id(OWNER_ID2).lastName(OWNER_LAST_NAME2).build());
+
+        List<Owner> owners = ownerService.findAllByLastNameLikeIgnoreCase(
+            OWNER_LAST_NAME1.substring(BEGIN_INDEX, END_INDEX).toUpperCase()
+        );
+
+        assertEquals(2, owners.size());
+    }
+
+    @Test
+    void findAllByLastNameLikeIgnoreCaseReturnEmpty() {
+        List<Owner> owners = ownerService.findAllByLastNameLikeIgnoreCase("OWNER_LAST_NAME1");
+
+        assertEquals(0, owners.size());
     }
 
 }
