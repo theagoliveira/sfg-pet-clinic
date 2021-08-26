@@ -8,3 +8,21 @@ spring:
   profiles:
     active:
       - springdatajpa
+  cache:
+    jcache:
+      config: classpath:ehcache.xml
+
+logging:
+  level:
+    '[guru.springframework]': debug
+
+bucket4j:
+  enabled: true
+  filters:
+  - cache-name: buckets
+    url: .*
+    rate-limits:
+    - bandwidths:
+      - capacity: 15
+        time: 10
+        unit: seconds
