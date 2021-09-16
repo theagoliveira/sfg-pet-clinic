@@ -1,22 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<parent>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.4.5</version>
-		<relativePath /> <!-- lookup parent from repository -->
-	</parent>
+<project
+    xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>2.4.5</version>
+    <relativePath /> <!-- lookup parent from repository -->
+  </parent>
 
   <groupId>guru.springframework</groupId>
-	<artifactId>sfg-pet-clinic</artifactId>
-	<version>0.0.5-SNAPSHOT</version>
-	<name>sfg-pet-clinic</name>
-	<description>SFG Pet Clinic Project</description>
+  <artifactId>sfg-pet-clinic</artifactId>
+  <version>0.0.5-SNAPSHOT</version>
+  <name>sfg-pet-clinic</name>
+  <description>SFG Pet Clinic Project</description>
 
   <properties>
-		<java.version>11</java.version>
-	</properties>
+    <java.version>11</java.version>
+  </properties>
 
   <modules>
     <module>pet-clinic-data</module>
@@ -24,12 +27,12 @@
   </modules>
   <packaging>pom</packaging>
 
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-release-plugin</artifactId>
@@ -46,9 +49,7 @@
         <artifactId>maven-failsafe-plugin</artifactId>
         <version>3.0.0-M5</version>
         <configuration>
-          <argLine>
-              --illegal-access=permit
-          </argLine>
+          <argLine>--illegal-access=permit</argLine>
         </configuration>
         <executions>
           <execution>
@@ -64,27 +65,14 @@
         <artifactId>maven-surefire-plugin</artifactId>
         <version>3.0.0-M5</version>
         <configuration>
-          <argLine>
-              --illegal-access=permit
-          </argLine>
+          <argLine>--illegal-access=permit</argLine>
         </configuration>
       </plugin>
-      <plugin>
-        <groupId>com.heroku.sdk</groupId>
-        <artifactId>heroku-maven-plugin</artifactId>
-        <version>3.0.3</version>
-        <configuration>
-          <processTypes>
-            <web>java -Dserver.port=$PORT $JAVA_OPTS -cp target/classes:target/dependency/* guru.springframework.sfgpetclinic PetClinicWebApplication</web>
-          </processTypes>
-          <jdkVersion>11</jdkVersion>
-        </configuration>
-      </plugin>
-		</plugins>
-	</build>
+    </plugins>
+  </build>
 
   <scm>
-    <developerConnection>scm:git:https://github.com/theagoliveira/sfg-pet-clinic.git</developerConnection>
+    <developerConnection>scm:git:https://github.com/theagoliveira/spring5-recipe-app.git</developerConnection>
     <tag>HEAD</tag>
   </scm>
 

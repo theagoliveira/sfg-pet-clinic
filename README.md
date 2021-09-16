@@ -114,7 +114,6 @@ Project from the online course [**Spring Framework 5: Beginner to Guru**](https:
   - Maven Failsafe Plugin
   - Maven Surefire Plugin
   - wro4j
-  - Heroku Maven Plugin
 
 ## Deployment
 
