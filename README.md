@@ -1,3 +1,5 @@
+[![CircleCI](https://circleci.com/gh/theagoliveira/sfg-pet-clinic.svg?style=shield)](https://circleci.com/gh/theagoliveira/sfg-pet-clinic)
+
 # Spring Framework — Pet Clinic
 
 Project from the online course [**Spring Framework 5: Beginner to Guru**](https://www.udemy.com/course/spring-framework-5-beginner-to-guru/) by John Thompson — Sections 2, 3, 4, 5, 7, 8, 9, 10, 11 and 12.
