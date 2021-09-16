@@ -1,4 +1,4 @@
-[![CircleCI](https://circleci.com/gh/theagoliveira/sfg-pet-clinic.svg?style=shield)](https://circleci.com/gh/theagoliveira/sfg-pet-clinic)
+[![CircleCI](https://circleci.com/gh/theagoliveira/spring5-pet-clinic.svg?style=shield)](https://circleci.com/gh/theagoliveira/spring5-pet-clinic)
 
 # Spring Framework — Pet Clinic
 
